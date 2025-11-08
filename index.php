@@ -24,9 +24,6 @@ if ($is_loged_in === TRUE) {
 } else {
     if (isset($_GET["option"])) {
         switch ($_GET["option"]) {
-            case "log_in":
-                log_in();
-                break;
             default:
                 $content = gen_log_in_form();
                 break;

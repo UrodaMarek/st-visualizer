@@ -1,7 +1,10 @@
 <?php
 
 function gen_menu(){
-    return "";
+    $menu = <<<END
+        a
+    END;
+    return $menu;
 }
 
 function gen_push_db_form(){
