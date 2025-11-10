@@ -1,11 +1,12 @@
 <?php
 
-function query($q){
+function query($q, $db = ''){
     $host = $_SESSION['host'];
     $user = $_SESSION['user'];
     $password = $_SESSION['password'];
+    $database = $db;
 
-    $db = new mysqli("$host","$user","$password");
+    $db = new mysqli("$host","$user","$password", "$database" );
     if ($db -> connect_errno) {
         return false;
     }
