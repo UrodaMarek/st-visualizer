@@ -2,19 +2,22 @@
 
 function gen_menu(){
     $menu = <<<END
-        a
+        <a href="./index.php?option=push_db">Push Tables</a>  -  
+        <a href="./index.php?option=show_tables">Show Tables</a> - 
+        <a href="./index.php?option=check_st">Summarize<a/> - 
+        <a href="./index.php?option=log_out">Log out</a></br>
     END;
     return $menu;
 }
 
 function gen_push_db_form(){
-    return "";
+    return "Coming soon";
 }
 function  gen_tables(){
-    return "a";
+    return "b";
 }
 function gen_check_result(){
-    return "";
+    return "c";
 }
 function gen_log_in_form(){
     $log_in_form = <<<END

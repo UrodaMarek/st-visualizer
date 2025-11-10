@@ -12,9 +12,9 @@ if (isset($_SESSION["user"]) && isset($_SESSION["host"]) && isset($_SESSION["pas
         if ((is_db_exists("st-visualizer"))["err"] != 1000) {
             if ((query("CREATE OR REPLACE DATABASE `st-visualizer` CHARACTER SET 'utf8' COLLATE 'utf8_polish_ci'"))["err"] == 4003) {
                 $is_logged_in = false;
-                $_SESSION["user"] = "";
-                $_SESSION["password"] = "";
-                $_SESSION["host"] = "";
+                unset($_SESSION['user']);
+                unset($_SESSION['password']);
+                unset($_SESSION['host']);
                 header("Location: ./index.php");
             } 
         }
@@ -26,11 +26,17 @@ if ($is_logged_in === true) {
     $content = gen_menu();
     if (isset($_GET["option"])) {
         switch ($_GET["option"]) {
-            case "pusch_db":
+            case "push_db":
                 $content .= gen_push_db_form();
                 break;
             case "check_st":
                 $content .= gen_check_result();
+                break;
+            case "log_out":
+                unset($_SESSION['user']);
+                unset($_SESSION['password']);
+                unset($_SESSION['host']);
+                header("Location: ./index.php");
                 break;
             case "show_tables":
             default:
