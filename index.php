@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <?php
 session_start();
 
@@ -5,22 +6,23 @@ require_once "./Database/db.php";
 require_once "./Assets/sections.php";
 
 $is_logged_in = false;
-if (isset($_SESSION["login"]) && isset($_SESSION["host"]) && isset($_SESSION["password"])) {
-    if ($_SESSION["login"] != "" && $_SESSION["host"] != "") {
+if (isset($_SESSION["user"]) && isset($_SESSION["host"]) && isset($_SESSION["password"])) {
+    if ($_SESSION["user"] != "" && $_SESSION["host"] != "") {
         $is_logged_in = true;
-        if (is_db_exists("st-visualizer") === FALSE) {
-            if ((query("CREATE OR REPLACE DATABASE `st-visualizer` CHARACTER SET 'utf8' COLLATE 'utf_8_polish_ci'")) === FALSE) {
+        if ((is_db_exists("st-visualizer"))["err"] != 1000) {
+            if ((query("CREATE OR REPLACE DATABASE `st-visualizer` CHARACTER SET 'utf8' COLLATE 'utf8_polish_ci'"))["err"] == 4003) {
                 $is_logged_in = false;
-                $_SESSION["login"] = "";
+                $_SESSION["user"] = "";
                 $_SESSION["password"] = "";
                 $_SESSION["host"] = "";
+                header("Location: ./index.php");
             } 
         }
     }
 }
 
 
-if ($is_logged_in === TRUE) { 
+if ($is_logged_in === true) { 
     $content = gen_menu();
     if (isset($_GET["option"])) {
         switch ($_GET["option"]) {
@@ -31,33 +33,32 @@ if ($is_logged_in === TRUE) {
                 $content = gen_check_result();
                 break;
             case "show_tables":
+                $content = gen_tables(); //? try delete
             default:
                 $content = gen_tables();
         }
     }
 } else {
+    
     if (isset($_GET["option"])) {
         switch ($_GET["option"]) {
             case "log_in":
                 $flag = false;
-                if (isset($_POST["login"]) && isset($_POST["host"]) && isset($_POST["password"])) {
-                    if ($_POST["login"] != "" && $_POST["host"] != "") {
-                        $_SESSION["login"] = $_POST["login"];
+                if (isset($_POST["user"]) && isset($_POST["host"]) && isset($_POST["password"])) {
+                    if ($_POST["user"] != "" && $_POST["host"] != "") {
+                        $_SESSION["user"] = $_POST["user"];
                         $_SESSION["password"] = $_POST["password"];
-                        $_SESSION["host"] = $_POST["host"]; 
+                        $_SESSION["host"] = $_POST["host"];
+                        header("Location: ./index.php?option=show_tables");
                     } else $flag = true;
                 } else $flag = true;
-                if ($flag) header('Location: ./index.php');
-                break;
-            default:
-                $content = gen_log_in_form();
+                if ($flag) header("Location: ./index.php");
                 break;
         }
-    }
+    } else $content = gen_log_in_form();
 }
 
 echo <<<END
-        <!DOCTYPE html>
         <html lang="en">
         <head>
             <meta charset="UTF-8">
