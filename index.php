@@ -27,15 +27,14 @@ if ($is_logged_in === true) {
     if (isset($_GET["option"])) {
         switch ($_GET["option"]) {
             case "pusch_db":
-                $content = gen_push_db_form();
+                $content .= gen_push_db_form();
                 break;
             case "check_st":
-                $content = gen_check_result();
+                $content .= gen_check_result();
                 break;
             case "show_tables":
-                $content = gen_tables(); //? try delete
             default:
-                $content = gen_tables();
+                $content .= gen_tables();
         }
     }
 } else {
