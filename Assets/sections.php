@@ -14,7 +14,22 @@ function gen_push_db_form(){
     return "Coming soon";
 }
 function  gen_tables(){
-    return "b";
+    $q = "SELECT `barcode` FROM `st`";
+    $arr = query($q, "st_visualizer");
+    $table = "<h3>Barcodes of scanned st</h3><table>";
+    if ($arr["err"] == 1000) {
+        while ($data = ($arr["result"] -> fetch_row())) {
+            $table .=<<<END
+                <tr>
+                    <td>
+                        $data[0]
+                    </td>
+                </tr>
+            END;
+        }
+    }
+    $table .= "</table>";
+    return $table;
 }
 function gen_check_result(){
     return "c";

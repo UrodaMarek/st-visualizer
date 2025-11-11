@@ -9,8 +9,8 @@ $is_logged_in = false;
 if (isset($_SESSION["user"]) && isset($_SESSION["host"]) && isset($_SESSION["password"])) {
     if ($_SESSION["user"] != "" && $_SESSION["host"] != "") {
         $is_logged_in = true;
-        if ((is_db_exists("st-visualizer"))["err"] != 1000) {
-            if ((query("CREATE OR REPLACE DATABASE `st-visualizer` CHARACTER SET 'utf8' COLLATE 'utf8_polish_ci'"))["err"] == 4003) {
+        if ((is_db_exists("st_visualizer"))["err"] != 1000) {
+            if ((query("CREATE OR REPLACE DATABASE `st_visualizer` CHARACTER SET 'utf8' COLLATE 'utf8_polish_ci'"))["err"] == 4003) {
                 $is_logged_in = false;
                 unset($_SESSION['user']);
                 unset($_SESSION['password']);
@@ -59,6 +59,8 @@ if ($is_logged_in === true) {
                 } else $flag = true;
                 if ($flag) header("Location: ./index.php");
                 break;
+            default:
+                $content = gen_log_in_form();
         }
     } else $content = gen_log_in_form();
 }
@@ -69,6 +71,15 @@ echo <<<END
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>st-visualizer</title>
+            <style>
+                table, tr, td {
+                    border-collapse: collapse;
+                    border:solid black 2px;
+                }
+                table {
+                    margin-top: 10px;
+                }
+            </style>
         </head>
         <body>
             $content
